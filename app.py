@@ -143,26 +143,35 @@ st.write("Understand why a specific transaction was flagged as an anomaly by the
 
 if total_anomalies > 0:
     anomaly_options = df_preprocessed[df_preprocessed['is_anomaly']].sort_values('anomaly_score').head(10)
-    selected_anomaly_idx = st.selectbox("Select an anomalous transaction to explain:", anomaly_options.index, format_func=lambda idx: f"Transaction ID: {idx} | Amount: ${df_preprocessed.loc[idx, 'transaction_amount']:.2f}")
+    selected_anomaly_idx = st.selectbox(
+        "Select an anomalous transaction to explain:",
+        anomaly_options.index,
+        format_func=lambda idx: f"Transaction ID: {idx} | Amount: ${df_preprocessed.loc[idx, 'transaction_amount']:.2f}"
+    )
 
     if selected_anomaly_idx:
         st.subheader(f"Explanation for Transaction ID: {selected_anomaly_idx}")
         with st.spinner("Generating SHAP explanation..."):
             explainer = shap.TreeExplainer(model)
             shap_values = explainer.shap_values(df_scaled.loc[[selected_anomaly_idx]])
-            st.write(f"The anomaly score for this transaction is: **{df_preprocessed.loc[selected_anomaly_idx, 'anomaly_score']:.4f}**")
-            fig, ax = plt.subplots(figsize=(10, 6))
-            shap_plot = shap.force_plot(explainer.expected_value, shap_values[0], df_scaled.loc[[selected_anomaly_idx]], feature_names=df_scaled.columns, show=False)
-            st_shap(shap_plot)
-            st_shap(fig)
 
+            st.write(f"The anomaly score for this transaction is: **{df_preprocessed.loc[selected_anomaly_idx, 'anomaly_score']:.4f}**")
+
+            # --- The correct way using streamlit-shap ---
+            import streamlit_shap as st_shap
+            st_shap.st_shap(shap.force_plot(
+                explainer.expected_value,
+                shap_values[0],
+                df_scaled.loc[[selected_anomaly_idx]],
+                feature_names=df_scaled.columns
+            ))
+            # --- End of streamlit-shap code ---
 
             st.write("---")
             st.info("""
             **How to interpret the plot:**
             - The **red arrows** show features that push the prediction towards a more **negative** anomaly score (i.e., more anomalous).
             - The **blue arrows** show features that push the prediction towards a more **positive** score (i.e., more normal).
-            - The **output value** is the final anomaly score for this transaction.
             """)
 else:
     st.write("No anomalies detected with the current contamination value. Please adjust the slider in the sidebar.")
