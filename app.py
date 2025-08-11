@@ -151,8 +151,23 @@ if total_anomalies > 0:
             st.write(f"The anomaly score for this transaction is: **{df_preprocessed.loc[selected_anomaly_idx, 'anomaly_score']:.4f}**")
             
             # This is the corrected way to display the SHAP force plot
-            shap_html = shap.force_plot(explainer.expected_value, shap_values[0], df_scaled.loc[[selected_anomaly_idx]], feature_names=df_scaled.columns, show=False)
-            st.components.v1.html(shap_html.html(), height=400)
+             # This is the corrected way to display a SHAP waterfall plot in Streamlit
+            fig, ax = plt.subplots(figsize=(10, 6))
+            shap.plots.waterfall(
+                shap.Explanation(
+                    values=shap_values[0],
+                    base_values=explainer.expected_value,
+                    data=df_scaled.loc[selected_anomaly_idx].values,
+                    feature_names=df_scaled.columns.tolist()
+                ),
+                max_display=10,
+                show=False,
+                ax=ax
+            )
+            
+            # Display the Matplotlib figure with st.pyplot
+            st.pyplot(fig, bbox_inches='tight')
+
 
             st.write("---")
             st.info("""
