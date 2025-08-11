@@ -136,6 +136,7 @@ if sample_account:
     st.plotly_chart(fig_anomalies, use_container_width=True)
 
 # --- Section: Explainable AI (XAI) with SHAP ---
+shap.initjs()
 st.header("4. Explainable AI (XAI) with SHAP")
 st.write("Understand why a specific transaction was flagged as an anomaly by the model.")
 
