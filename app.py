@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 import shap
-import matplotlib.pyplot as plt
 
 
 st.set_page_config(layout="wide", page_title="Advanced Anomaly Detection Dashboard")
@@ -153,19 +152,8 @@ if total_anomalies > 0:
             st.write(f"The anomaly score for this transaction is: **{df_preprocessed.loc[selected_anomaly_idx, 'anomaly_score']:.4f}**")
             
             # This is the corrected way to display the SHAP force plot
-             # This is the corrected way to display a SHAP waterfall plot in Streamlit
-            fig, ax = plt.subplots(figsize=(10, 6))
-            shap.plots.waterfall(
-                shap.Explanation(
-                    values=shap_values[0],
-                    base_values=explainer.expected_value,
-                    data=df_scaled.loc[selected_anomaly_idx].values,
-                    feature_names=df_scaled.columns.tolist()
-                ),
-                max_display=10,
-                show=False,
-                ax=ax
-            )
+            shap_plot = shap.force_plot(explainer.expected_value, shap_values[0], df_scaled.loc[[selected_anomaly_idx]], feature_names=df_scaled.columns, show=False)
+            st.pyplot(shap_plot, bbox_inches='tight')
             
             # Display the Matplotlib figure with st.pyplot
             st.pyplot(fig, bbox_inches='tight')
