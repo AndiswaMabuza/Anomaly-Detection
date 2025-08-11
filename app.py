@@ -150,9 +150,9 @@ if total_anomalies > 0:
             shap_values = explainer.shap_values(df_scaled.loc[[selected_anomaly_idx]])
             st.write(f"The anomaly score for this transaction is: **{df_preprocessed.loc[selected_anomaly_idx, 'anomaly_score']:.4f}**")
             
-            # Using st.pyplot with a SHAP plot
-            shap_plot = shap.force_plot(explainer.expected_value, shap_values[0], df_scaled.loc[[selected_anomaly_idx]], feature_names=df_scaled.columns, show=False)
-            st.pyplot(shap_plot, bbox_inches='tight')
+            # This is the corrected way to display the SHAP force plot
+            shap_html = shap.force_plot(explainer.expected_value, shap_values[0], df_scaled.loc[[selected_anomaly_idx]], feature_names=df_scaled.columns, show=False)
+            st.components.v1.html(shap_html.html(), height=400)
 
             st.write("---")
             st.info("""
