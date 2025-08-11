@@ -153,7 +153,7 @@ if total_anomalies > 0:
             
             shap_plot = shap.force_plot(explainer.expected_value, shap_values[0], df_scaled.loc[[selected_anomaly_idx]], feature_names=df_scaled.columns, show=False)
             st_shap(shap_plot)
-            st.pyplot(fig, bbox_inches='tight')
+            st.shap(fig)
 
 
             st.write("---")
