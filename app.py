@@ -174,3 +174,24 @@ if total_anomalies > 0:
             """)
 else:
     st.write("No anomalies detected with the current contamination value. Please adjust the slider in the sidebar.")
+
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f0f2f6;
+        color: black;
+        text-align: center;
+        padding: 10px;
+    }
+    </style>
+    <div class="footer">
+        <p>Developed By Andiswa Mabuza, Email <a href="mailto:Amabuza53@gmail.com">Amabuza53@gmail.com</a>. Developer Site <a href="https://andiswamabuza.vercel.app" target="_blank">https://andiswamabuza.vercel.app</a></p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
