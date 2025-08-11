@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 import shap
-
+from streamlit_shap import st_shap
 
 st.set_page_config(layout="wide", page_title="Advanced Anomaly Detection Dashboard")
 
@@ -152,8 +152,7 @@ if total_anomalies > 0:
             st.write(f"The anomaly score for this transaction is: **{df_preprocessed.loc[selected_anomaly_idx, 'anomaly_score']:.4f}**")
             
             shap_plot = shap.force_plot(explainer.expected_value, shap_values[0], df_scaled.loc[[selected_anomaly_idx]], feature_names=df_scaled.columns, show=False)
-            st.pyplot(shap_plot, bbox_inches='tight')
-            
+            st_shap(shap_plot, bbox_inches='tight')
             st.pyplot(fig, bbox_inches='tight')
 
 
