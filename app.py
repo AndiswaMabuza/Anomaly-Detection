@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 import shap
+import matplotlib.pyplot as plt
+
 
 st.set_page_config(layout="wide", page_title="Advanced Anomaly Detection Dashboard")
 
