@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 import shap
-from streamlit_shap import st_shap
+import streamlit_shap as st_shap
 import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide", page_title="Advanced Anomaly Detection Dashboard")
