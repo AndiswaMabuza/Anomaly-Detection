@@ -150,7 +150,7 @@ if total_anomalies > 0:
             explainer = shap.TreeExplainer(model)
             shap_values = explainer.shap_values(df_scaled.loc[[selected_anomaly_idx]])
             st.write(f"The anomaly score for this transaction is: **{df_preprocessed.loc[selected_anomaly_idx, 'anomaly_score']:.4f}**")
-            
+            fig, ax = plt.subplots(figsize=(10, 6))
             shap_plot = shap.force_plot(explainer.expected_value, shap_values[0], df_scaled.loc[[selected_anomaly_idx]], feature_names=df_scaled.columns, show=False)
             st_shap(shap_plot)
             st_shap(fig)
