@@ -8,6 +8,7 @@ from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 import shap
 from streamlit_shap import st_shap
+import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide", page_title="Advanced Anomaly Detection Dashboard")
 
