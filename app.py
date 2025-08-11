@@ -156,17 +156,16 @@ if total_anomalies > 0:
             shap_values = explainer.shap_values(df_scaled.loc[[selected_anomaly_idx]])
 
             st.write(f"The anomaly score for this transaction is: **{df_preprocessed.loc[selected_anomaly_idx, 'anomaly_score']:.4f}**")
-
-            # --- The correct way using streamlit-shap ---
-            import streamlit_shap as st_shap
-            st_shap.st_shap(shap.force_plot(
-                explainer.expected_value,
-                shap_values[0],
-                df_scaled.loc[[selected_anomaly_idx]],
-                feature_names=df_scaled.columns
-            ))
-            # --- End of streamlit-shap code ---
-
+            st_shap.st_shap(
+                shap.force_plot(
+                    explainer.expected_value,
+                    shap_values[0],
+                    df_scaled.loc[[selected_anomaly_idx]],
+                    feature_names=df_scaled.columns
+                ),
+                width=1000 
+            )
+            
             st.write("---")
             st.info("""
             **How to interpret the plot:**
